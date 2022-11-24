@@ -1,0 +1,34 @@
+.container {
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  max-width: 1152px;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    font-style: normal;
+    line-height: 2.625rem;
+    color: var(--gray-700);
+    font-family: "Baloo 2", cursive;
+  }
+}
+
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 3.375rem;
+  gap: 2.5rem 2rem;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 812px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

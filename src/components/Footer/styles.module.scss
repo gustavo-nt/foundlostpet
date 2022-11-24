@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  padding: 0.5rem;
+  justify-content: center;
+  width: 100%;
+
+  span {
+    font-size: 0.875rem;
+    color: var(--gray-900);
+  }
+}

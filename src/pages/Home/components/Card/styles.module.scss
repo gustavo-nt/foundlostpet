@@ -1,0 +1,136 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background: var(--gray-100);
+  padding: 0 1.25rem 1.25rem;
+  border-radius: 6px 36px;
+  align-items: center;
+  text-align: center;
+
+  .image {
+    display: flex;
+    margin-top: -1.5rem;
+    flex-direction: column;
+    align-items: center;
+
+    > img {
+      object-fit: contain;
+    }
+
+    > a {
+      color: inherit;
+      margin-top: 0.25rem;
+      text-decoration: none;
+      font-size: 0.75rem;
+    }
+  }
+
+  .title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-style: normal;
+    line-height: 1.625rem;
+    margin-bottom: 0.5rem;
+    color: var(--gray-700);
+    font-family: "Baloo 2", cursive;
+  }
+
+  .description {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.125rem;
+    color: var(--gray-500);
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    overflow: hidden;
+    flex-grow: 1;
+  }
+
+  .region {
+    font-size: 0.875rem;
+    color: var(--gray-900);
+    margin-bottom: 0.875rem;
+  }
+}
+
+.situation {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+
+  span {
+    line-height: 1;
+    border-radius: 100px;
+    padding: 0.35rem 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.625rem;
+    font-weight: 700;
+
+    &[data-situation="missing"] {
+      background-color: var(--red-100);
+      color: var(--red-700);
+    }
+
+    &[data-situation="sighned"] {
+      background-color: var(--yellow-300);
+      color: var(--yellow-800);
+    }
+
+    &[data-situation="found"] {
+      background-color: var(--green-200);
+      color: var(--green-600);
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.375rem;
+  width: 90%;
+
+  .update {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    > svg {
+      fill: var(--purple-800);
+    }
+
+    > strong {
+      color: var(--gray-700);
+      font-family: "Baloo 2", cursive;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    > button {
+      border: 0;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.4s ease 0s;
+      background: var(--purple-800);
+      border-radius: 6px;
+      padding: 0.5rem;
+      line-height: 0;
+
+      svg {
+        color: var(--white);
+      }
+
+      &:hover {
+        background: var(--purple-500);
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+.container {
+  width: 100%;
+  display: flex;
+  padding: 1rem 1rem 0;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1152px;
+  margin: 0 auto;
+
+  > a svg {
+    color: var(--yellow-800);
+
+    &:hover {
+      filter: brightness(0.875);
+    }
+  }
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  background-color: var(--purple-300);
+  border-radius: 6px;
+  padding: 0.5rem;
+  gap: 0.25rem;
+
+  > svg {
+    color: var(--purple-500);
+  }
+
+  > span {
+    font-size: 0.875rem;
+    color: var(--purple-500);
+  }
+}
