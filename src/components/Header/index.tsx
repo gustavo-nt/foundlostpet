@@ -1,13 +1,22 @@
-import { Link, NavLink } from "react-router-dom";
-import { useLocationContext } from "../../contexts/LocationContext";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { MapPin, User, SignOut } from "phosphor-react";
 
 import logo from "../../assets/logo-yellow.png";
-import { MapPin, User } from "phosphor-react";
+import { useLocationContext } from "../../hooks/location";
 
 import styles from "./styles.module.scss";
+import { useAuth } from "../../hooks/auth";
+import { useCallback } from "react";
 
 export function Header() {
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const { geoLocation } = useLocationContext();
+
+  const handleSignOut = useCallback(() => {
+    signOut();
+    navigate("/");
+  }, [signOut, navigate]);
 
   return (
     <header className={styles.container}>
@@ -24,9 +33,15 @@ export function Header() {
             </span>
           </div>
 
-          <Link to={"/signin"} className={styles.order}>
+          <Link to={!user ? "/signin" : "/profile"} className={styles.order}>
             <User size={22} weight="fill" />
           </Link>
+
+          {user && (
+            <button className={styles.signOut} onClick={handleSignOut}>
+              <SignOut size={22} weight="fill" />
+            </button>
+          )}
         </div>
       </div>
     </header>

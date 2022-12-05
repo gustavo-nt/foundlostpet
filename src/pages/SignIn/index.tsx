@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -7,12 +8,13 @@ import { Footer } from "../../components/Footer";
 import { HeaderFlow } from "../../components/HeaderFlow";
 import { InputField } from "../../components/InputField";
 
-import api from "../../services/geocodeApi";
 import logo from "../../assets/logo-yellow.png";
 import signInImg from "../../assets/signin-img.png";
 import { EnvelopeSimple, Lock, SignOut } from "phosphor-react";
 
 import styles from "./styles.module.scss";
+import { useAuth } from "../../hooks/auth";
+import { useToast } from "../../hooks/toast";
 
 interface IFormInputs {
   email: string;
@@ -25,7 +27,9 @@ const schema = yup.object().shape({
 });
 
 export function SignIn() {
+  const { signIn } = useAuth();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const {
     register,
@@ -35,14 +39,31 @@ export function SignIn() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: IFormInputs) => {
-    try {
-      await api.post("/sessions", data);
-      navigate("/");
-    } catch (error) {
-      alert("Ocorreu algum erro ao logar...");
-    }
-  };
+  const onSubmit = useCallback(
+    async (data: IFormInputs) => {
+      try {
+        await signIn({
+          email: data.email,
+          password: data.password,
+        });
+
+        addToast({
+          type: "success",
+          title: "Login realizado com sucesso",
+        });
+
+        navigate("/");
+      } catch (error) {
+        addToast({
+          type: "error",
+          title: "Erro na auntenticação",
+          description:
+            "Ocorreu um erro ao fazer o login, cheque as credencias.",
+        });
+      }
+    },
+    [navigate, signIn, addToast],
+  );
 
   return (
     <div className={styles.container}>
@@ -74,7 +95,9 @@ export function SignIn() {
               />
             </div>
 
-            <button type="submit">Entrar</button>
+            <button type="submit" title="Entrar">
+              Entrar
+            </button>
             <Link to="/reset-password">Esqueci Minha Senha</Link>
           </form>
 
@@ -94,6 +117,7 @@ export function SignIn() {
           <a
             href="https://thumbs.dreamstime.com/b/mesti%C3%A7o-de-boxador-entre-o-labrador-boxer-dog-watercolor-ilustra%C3%A7%C3%A3o-arte-digital-fofo-com-um-retrato-comprimento-total-251573403.jpg"
             target="_blank"
+            rel="noreferrer"
           >
             Iryna Zaichenko
           </a>

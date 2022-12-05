@@ -66,8 +66,9 @@ export function Intro() {
             alt="Cão com pelagem amarela e branca"
           />
           <a
-            href="https://thumbs.dreamstime.com/z/welsh-corgi-retrato-de-ra%C3%A7a-c%C3%A3o-pembroke-isolado-em-branco-ilustra%C3%A7%C3%A3o-arte-digital-desenho-aquarela-animal-desenhado-%C3%A0-m%C3%A3o-159585667.jpg"
             target="_blank"
+            rel="noreferrer"
+            href="https://thumbs.dreamstime.com/z/welsh-corgi-retrato-de-ra%C3%A7a-c%C3%A3o-pembroke-isolado-em-branco-ilustra%C3%A7%C3%A3o-arte-digital-desenho-aquarela-animal-desenhado-%C3%A0-m%C3%A3o-159585667.jpg"
           >
             Iryna Zaichenko
           </a>

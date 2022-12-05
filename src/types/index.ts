@@ -1,6 +1,6 @@
 export enum SituationEnum {
   MISSING = "Desaparecido",
-  SIGHNED = "Avistado",
+  SIGHTED = "Avistado",
   FOUND = "Encontrado",
 }
 
@@ -24,6 +24,8 @@ export interface UserProps {
 export interface DisappearanceProps {
   id: string;
   name: string;
+  phone: string;
+  email: string;
   type: keyof typeof LinkEnum;
   situation: keyof typeof SituationEnum;
   updated_at: string;

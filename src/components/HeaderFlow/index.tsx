@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useLocationContext } from "../../contexts/LocationContext";
+import { useLocationContext } from "../../hooks/location";
 
 import { ArrowLeft, MapPin } from "phosphor-react";
 import styles from "./styles.module.scss";

@@ -1,0 +1,59 @@
+.container {
+  width: 360px;
+  display: flex;
+  position: relative;
+  border-radius: 10px;
+  padding: 1rem 2rem 1rem 1rem;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+
+  & + div {
+    margin-top: 0.5rem;
+  }
+
+  > svg {
+    margin: 0.25rem 0.75rem 0 0;
+  }
+
+  &.hasDescription {
+    align-items: center;
+    
+    svg {
+      margin-top: 0;
+    }
+  }
+
+  div {
+    flex: 1;
+
+    p {
+      opacity: 0.8;
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+  }
+
+  button {
+    border: 0;
+    right: 2rem;
+    top: 1.25rem;
+    color: inherit;
+    position: absolute;
+    background: transparent;
+  }
+
+  &[data-type="error"] {
+    color: var(--red-700);
+    background: var(--red-100);
+  }
+
+  &[data-type="success"] {
+    color: var(--green-600);
+    background: var(--green-200);
+  }
+
+  &[data-type="info"] {
+    color: var(--yellow-800);
+    background: var(--yellow-300);
+  }
+}

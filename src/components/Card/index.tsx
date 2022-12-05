@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 import { Calendar, SignOut } from "phosphor-react";
-import { DisappearanceProps, LinkEnum, SituationEnum } from "../../../../types";
+import { DisappearanceProps, LinkEnum, SituationEnum } from "../../types";
 
 import styles from "./styles.module.scss";
 
@@ -27,6 +27,8 @@ export function Card({ disappearance }: CardProps) {
     uf,
   } = disappearance;
 
+  const navigate = useNavigate();
+
   return (
     <div className={styles.container}>
       <div className={styles.image}>
@@ -39,7 +41,7 @@ export function Card({ disappearance }: CardProps) {
           alt={name}
         />
 
-        <a href={LinkEnum[type]} target="_blank">
+        <a href={LinkEnum[type]} target="_blank" rel="noreferrer">
           Iryna Zaichenko
         </a>
       </div>
@@ -68,7 +70,11 @@ export function Card({ disappearance }: CardProps) {
         </div>
 
         <div className={styles.actions}>
-          <button type="button" onClick={() => console.log(id)}>
+          <button
+            type="button"
+            title="Acessar desaparecimento"
+            onClick={() => navigate(`/disappearance/${id}`)}
+          >
             <SignOut size={22} weight="fill" />
           </button>
         </div>

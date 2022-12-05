@@ -1,10 +1,22 @@
-import { MapContainer, TileLayer } from "react-leaflet";
+import { LeafletMouseEvent, LatLngTuple } from "leaflet";
+import { MapContainer, TileLayer, useMapEvent, useMap } from "react-leaflet";
+import { LeafletContent } from "./components/LeafletContent";
 
 interface LeafletMapProps {
+  isEnableTouch?: boolean;
+  isCentered?: boolean;
   children?: React.ReactNode;
+  position?: LatLngTuple;
+  onClickMap?: (e: LeafletMouseEvent) => void;
 }
 
-export function LeafletMap({ children }: LeafletMapProps) {
+export function LeafletMap({
+  children,
+  onClickMap,
+  isCentered = false,
+  isEnableTouch = true,
+  position,
+}: LeafletMapProps) {
   return (
     <MapContainer
       center={[-29.642238999999986, -50.79557500000001]}
@@ -18,6 +30,12 @@ export function LeafletMap({ children }: LeafletMapProps) {
         }`}
       />
       {children}
+      <LeafletContent
+        onClickMap={onClickMap}
+        isEnableTouch={isEnableTouch}
+        position={position}
+        isCentered={isCentered}
+      />
     </MapContainer>
   );
 }

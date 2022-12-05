@@ -1,0 +1,250 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../assets/home-background.png");
+  background-size: cover;
+  align-items: stretch;
+  position: relative;
+}
+
+.wrapper {
+  padding: 0 1rem;
+
+  .content {
+    padding: 4rem;
+    margin: 3rem auto;
+    position: relative;
+    color: var(--gray-900);
+    background: var(--white);
+    border-radius: 6px;
+    margin-top: 6rem;
+    max-width: 730px;
+    width: 100%;
+
+    h1 {
+      font-weight: 800;
+      font-size: 2.25rem;
+      font-style: normal;
+      line-height: 3.875rem;
+      font-family: "Baloo 2", cursive;
+    }
+  }
+
+  .edit {
+    right: 2rem;
+    display: flex;
+    position: absolute;
+    cursor: pointer;
+    top: 1.75rem;
+
+    > svg {
+      color: var(--purple-500);
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--purple-800);
+      }
+    }
+  }
+
+  .image {
+    display: flex;
+    margin-top: -10rem;
+    flex-direction: column;
+    align-items: center;
+
+    > img {
+      max-width: 200px;
+      object-fit: contain;
+    }
+
+    > a {
+      color: inherit;
+      margin-top: 0.25rem;
+      text-decoration: none;
+      font-size: 0.75rem;
+    }
+  }
+
+  .details {
+    border: 0;
+    margin-top: 1rem;
+
+    + .details {
+      margin-top: 1.5rem;
+    }
+
+    h2 {
+      font-family: "Baloo 2", cursive;
+      margin-bottom: 0.875rem;
+    }
+
+    label {
+      font-size: 0.875rem;
+    }
+
+    > div + div {
+      margin-top: 0.875rem;
+    }
+
+    .box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.875rem;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
+    .fieldGroup {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+
+      > div {
+        width: 50%;
+      }
+    }
+  }
+
+  .emptyComments {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    > svg {
+      color: var(--yellow-500);
+    }
+
+    > strong {
+      font-size: 1rem;
+      color: var(--gray-600);
+    }
+  }
+
+  .loadingComments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.situation {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+
+  span {
+    line-height: 1;
+    border-radius: 100px;
+    padding: 0.35rem 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.625rem;
+    font-weight: 700;
+
+    &[data-situation="missing"] {
+      background-color: var(--red-100);
+      color: var(--red-700);
+    }
+
+    &[data-situation="sighted"] {
+      background-color: var(--yellow-300);
+      color: var(--yellow-800);
+    }
+
+    &[data-situation="found"] {
+      background-color: var(--green-200);
+      color: var(--green-600);
+    }
+  }
+}
+
+.mapContainer {
+  display: flex;
+  flex-direction: column;
+  background: var(--gray-200);
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  width: 100%;
+
+  .mapContent {
+    height: 320px;
+    width: 100%;
+  }
+
+  .mapFooter {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--gray-300);
+    color: var(--gray-900);
+    padding: 0.75rem 0;
+    text-align: center;
+
+    a {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+
+      :hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  .wrapper .content {
+    padding: 3.5rem;
+    padding-top: 4rem;
+
+    .details {
+      h2 {
+        margin-bottom: 1.625rem;
+      }
+
+      .fieldGroup {
+        flex-direction: column;
+        gap: 0.875rem;
+
+        > div {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .wrapper .content {
+    padding: 2.5rem;
+    padding-top: 4rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .wrapper .content {
+    padding: 1.875rem;
+    padding-top: 4rem;
+
+    .details {
+      h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 350px) {
+  .wrapper .content {
+    padding: 1.25rem;
+    padding-top: 4rem;
+  }
+}

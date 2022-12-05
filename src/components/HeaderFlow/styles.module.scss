@@ -1,11 +1,11 @@
 .container {
   width: 100%;
   display: flex;
-  padding: 1rem 1rem 0;
   justify-content: space-between;
   align-items: center;
   max-width: 1152px;
   margin: 0 auto;
+  padding: 1rem;
 
   > a svg {
     color: var(--yellow-800);
