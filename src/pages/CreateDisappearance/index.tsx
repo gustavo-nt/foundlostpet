@@ -3,7 +3,7 @@ import Select from "react-select";
 import { Marker } from "react-leaflet";
 import { useForm } from "react-hook-form";
 import { LeafletMouseEvent } from "leaflet";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -19,6 +19,7 @@ import styles from "./styles.module.scss";
 import phoneMask from "../../utils/phoneMask";
 import geocodeApi from "../../services/geocodeApi";
 import disappearanceApi from "../../services/disappearanceApi";
+import { useAuth } from "../../hooks/auth";
 
 interface IFormInputs {
   name: string;
@@ -57,6 +58,7 @@ const schema = yup.object().shape({
 });
 
 export function CreateDisappearance() {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -143,6 +145,19 @@ export function CreateDisappearance() {
     },
     [setValue],
   );
+
+  useEffect(() => {
+    if (!user) {
+      addToast({
+        type: "error",
+        title: "Vc precisa logar.",
+        description:
+          "Para criar um registro, vc precisa estar logado na plataforma.",
+      });
+
+      navigate("/signin");
+    }
+  }, [user, addToast, navigate]);
 
   return (
     <div className={styles.container}>

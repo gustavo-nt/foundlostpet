@@ -1,5 +1,5 @@
 import { Marker } from "react-leaflet";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 
 import { Comment } from "./components/Comment";
@@ -8,7 +8,6 @@ import { InputField } from "../../components/InputField";
 import { LeafletMap } from "../../components/LeafletMap";
 import { TextareaField } from "../../components/TextareaField";
 
-import { useLocationContext } from "../../hooks/location";
 import { useAuth, User } from "../../hooks/auth";
 
 import { DisappearanceProps, LinkEnum, SituationEnum } from "../../types";
@@ -30,13 +29,15 @@ interface CommentProps {
 }
 
 export function Disappearance() {
-  const [isLoading, setIsLoading] = useState(true as boolean);
+  const [isLoading, setIsLoading] = useState(true);
   const [comments, setComments] = useState<CommentProps[]>([]);
-  const [disappearance, setDisappearance] = useState({} as DisappearanceProps);
+  const [disappearance, setDisappearance] = useState<
+    DisappearanceProps | undefined
+  >(undefined);
 
-  const { geoLocation } = useLocationContext();
   const { user } = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const getComments = useCallback(async () => {
     const { data } = await api.get(`/comments`, {
@@ -58,10 +59,14 @@ export function Disappearance() {
     getDisappearance();
 
     async function getDisappearance() {
-      const { data } = await api.get(`/disappearances/${id}`);
-      setDisappearance(data);
+      try {
+        const { data } = await api.get(`/disappearances/${id}`);
+        setDisappearance(data);
+      } catch (error) {
+        navigate("/404");
+      }
     }
-  }, [id]);
+  }, [id, navigate]);
 
   useEffect(() => {
     getComments();
@@ -73,43 +78,42 @@ export function Disappearance() {
 
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          {/* {user.id === disappearance.user.id && (
+          {user && user.id === disappearance?.user.id && (
             <Link
               to={`/update-disappearance/${disappearance.id}`}
               className={styles.edit}
             >
               <PencilLine size={28} weight="fill" />
             </Link>
-          )} */}
+          )}
 
-          <div className={styles.image}>
-            <img
-              // src={`/animals/${disappearance.image}`}
-              src={`/animals/dog.png`}
-              aria-label="Autor: Iryna Zaichenko"
-              title="Autor: Iryna Zaichenko"
-              alt={disappearance.type}
-            />
+          {disappearance && (
+            <div className={styles.image}>
+              <img
+                src={`/animals/${disappearance.image}`}
+                aria-label="Autor: Iryna Zaichenko"
+                title="Autor: Iryna Zaichenko"
+                alt={disappearance?.type}
+              />
 
-            <a
-              href={LinkEnum[disappearance.type]}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Iryna Zaichenko
-            </a>
-          </div>
+              <a
+                href={LinkEnum[disappearance.type]}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Iryna Zaichenko
+              </a>
+            </div>
+          )}
 
           <div className={styles.details}>
             <div className={styles.box}>
               <h2>Informações</h2>
 
               <div className={styles.situation}>
-                {/* <span data-situation={disappearance.situation.toLowerCase()}>
-                  {SituationEnum[disappearance.situation]}
-                </span> */}
-
-                <span data-situation="sighted">Atualizado</span>
+                <span data-situation={disappearance?.situation.toLowerCase()}>
+                  {disappearance ? SituationEnum[disappearance.situation] : ""}
+                </span>
               </div>
             </div>
 
@@ -118,7 +122,7 @@ export function Disappearance() {
               disabled
               name="name"
               type="text"
-              value={disappearance.name}
+              value={disappearance?.name}
               label="O animal atende por"
             />
 
@@ -128,7 +132,7 @@ export function Disappearance() {
               id="species"
               name="species"
               label="Espécie"
-              value={disappearance.type}
+              value={disappearance?.type}
             />
 
             <div className={styles.fieldGroup}>
@@ -138,7 +142,7 @@ export function Disappearance() {
                 type="number"
                 name="whatsapp"
                 label="Whatsapp"
-                value={disappearance.phone}
+                value={disappearance?.phone}
               />
 
               <InputField
@@ -147,7 +151,7 @@ export function Disappearance() {
                 name="email"
                 type="email"
                 label="Email"
-                value={disappearance.email}
+                value={disappearance?.email}
               />
             </div>
 
@@ -156,7 +160,7 @@ export function Disappearance() {
               id="about"
               name="about"
               label="Sobre"
-              value={disappearance.description}
+              value={disappearance?.description}
             />
           </div>
 
@@ -165,30 +169,30 @@ export function Disappearance() {
 
             <div className={styles.mapContainer}>
               <div className={styles.mapContent}>
-                <LeafletMap
-                  isCentered
-                  position={[geoLocation.latitude, geoLocation.longitude]}
-                  // position={[
-                  //   Number(disappearance.latitude),
-                  //   Number(disappearance.longitude),
-                  // ]}
-                >
-                  <Marker
-                    icon={mapIcon}
-                    position={[geoLocation.latitude, geoLocation.longitude]}
-                    // position={[
-                    //   Number(disappearance.latitude),
-                    //   Number(disappearance.longitude),
-                    // ]}
-                  />
-                </LeafletMap>
+                {disappearance && (
+                  <LeafletMap
+                    isCentered
+                    position={[
+                      Number(disappearance?.latitude),
+                      Number(disappearance?.longitude),
+                    ]}
+                  >
+                    <Marker
+                      icon={mapIcon}
+                      position={[
+                        Number(disappearance?.latitude),
+                        Number(disappearance?.longitude),
+                      ]}
+                    />
+                  </LeafletMap>
+                )}
               </div>
 
               <div className={styles.mapFooter}>
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href={`https://maps.google.com/mobile?q=${disappearance.latitude},${disappearance.longitude}&z=15`}
+                  href={`https://maps.google.com/mobile?q=${disappearance?.latitude},${disappearance?.longitude}&z=15`}
                 >
                   <strong>Veja a localização no Google Maps</strong>
                 </a>
@@ -202,7 +206,7 @@ export function Disappearance() {
                 name="city"
                 type="text"
                 label="Cidade"
-                value={disappearance.city}
+                value={disappearance?.city}
               />
 
               <InputField
@@ -211,7 +215,7 @@ export function Disappearance() {
                 disabled
                 type="text"
                 label="Estado(UF)"
-                value={disappearance.uf}
+                value={disappearance?.uf}
               />
             </div>
           </div>
