@@ -5,10 +5,11 @@ import { Home } from "./pages/Home";
 import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/Signup";
 import { Profile } from "./pages/Profile";
+import { NotFound } from "./pages/NotFound";
+import { Disappearance } from "./pages/Disappearance";
 import { ResetPassword } from "./pages/ResetPassword";
 import { CreateDisappearance } from "./pages/CreateDisappearance";
 import { UpdateDisappearance } from "./pages/UpdateDisappearance";
-import { Disappearance } from "./pages/Disappearance";
 
 export function Router() {
   return (
@@ -25,6 +26,8 @@ export function Router() {
       />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/disappearance/:id" element={<Disappearance />} />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

@@ -83,7 +83,7 @@ export function Comment({
             <span>{commentedDateRelativeToNow}</span>
           </div>
 
-          {!isEnabled && user.id === userAuth.id && (
+          {!isEnabled && user && userAuth && user.id === userAuth.id && (
             <button className={styles.edit} title="Editar">
               <Pencil size={22} weight="fill" onClick={handleEnableEdit} />
             </button>

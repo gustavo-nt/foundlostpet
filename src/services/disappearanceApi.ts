@@ -11,7 +11,7 @@ api.interceptors.response.use(
       localStorage.removeItem("@FoundLostPet:token");
       localStorage.removeItem("@FoundLostPet:user");
 
-      window.location.href = "/";
+      window.location.href = "/signin";
     }
   },
 );
