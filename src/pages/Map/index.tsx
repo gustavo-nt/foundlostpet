@@ -53,7 +53,10 @@ export function Map() {
           <Marker
             icon={mapIcon}
             key={disappearance.id}
-            position={[geoLocation.latitude, geoLocation.longitude]}
+            position={[
+              Number(disappearance.latitude),
+              Number(disappearance.longitude),
+            ]}
           >
             <Popup
               minWidth={160}

@@ -229,9 +229,14 @@ export function CreateDisappearance() {
                 type="text"
                 maxLength={15}
                 label="Telefone"
-                handleFieldValue={handleChangePhone}
                 errorMessage={errors.phone?.message}
-                register={register("phone")}
+                register={
+                  (register("phone"),
+                  {
+                    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChangePhone(e),
+                  })
+                }
                 value={phone}
               />
 

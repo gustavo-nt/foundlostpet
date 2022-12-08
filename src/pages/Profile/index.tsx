@@ -121,14 +121,14 @@ export function Profile() {
           latitude: data.address.latitude,
           longitude: data.address.longitude,
         });
-      } catch (error) {
+      } catch (error: any) {
         if (error.response.data.statusCode === 401) {
           signOut();
 
           addToast({
             type: "error",
             title: "Sessão perdida!",
-            description: "Vc foi deslogado. Faça o login novamente.",
+            description: "Você foi deslogado. Faça o login novamente.",
           });
         }
       }
@@ -293,9 +293,14 @@ export function Profile() {
                 type="text"
                 maxLength={15}
                 label="Telefone"
-                handleFieldValue={handleChangePhone}
                 errorMessage={errors.phone?.message}
-                register={register("phone")}
+                register={
+                  (register("phone"),
+                  {
+                    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChangePhone(e),
+                  })
+                }
                 disabled={!isEnableEdit}
                 value={phone}
               />
