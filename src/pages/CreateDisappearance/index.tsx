@@ -66,8 +66,10 @@ export function CreateDisappearance() {
     setValue,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<IFormInputs>({
+    mode: "all",
+    reValidateMode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
       city: "",
@@ -122,10 +124,17 @@ export function CreateDisappearance() {
         addToast({
           type: "success",
           title: "Desaparecimento criado com sucesso",
-          description: "Fique atento os comentários do seu registro",
+          description: "Você será redirecionado para a página do Mapa",
         });
 
-        navigate("/map");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+
+        setTimeout(() => {
+          navigate("/map");
+        }, 3000);
       } catch (error) {
         addToast({
           type: "error",
@@ -140,7 +149,6 @@ export function CreateDisappearance() {
 
   const handleChangePhone = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(e.target.value);
       setValue("phone", phoneMask(e.target.value.toString()));
     },
     [setValue],
@@ -286,7 +294,7 @@ export function CreateDisappearance() {
             </div>
           </fieldset>
 
-          <button type="submit" title="Cadastrar">
+          <button type="submit" title="Cadastrar" disabled={!isValid}>
             Cadastrar
           </button>
         </form>

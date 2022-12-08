@@ -50,8 +50,10 @@ export function SignUp() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<IFormInputs>({
+    mode: "all",
+    reValidateMode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
       phone: "",
@@ -90,9 +92,18 @@ export function SignUp() {
         addToast({
           type: "success",
           title: "Conta criada com sucesso",
+          description:
+            "Em breve, você será redirecionado para a página de login.",
         });
 
-        navigate("/");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+
+        setTimeout(() => {
+          navigate("/signin");
+        }, 3000);
       } catch (error) {
         addToast({
           type: "error",
@@ -135,7 +146,6 @@ export function SignUp() {
 
   const handleChangePhone = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(e.target.value);
       setValue("phone", phoneMask(e.target.value.toString()));
     },
     [setValue],
@@ -232,7 +242,7 @@ export function SignUp() {
             </div>
           </fieldset>
 
-          <button type="submit" title="Cadastrar">
+          <button type="submit" title="Cadastrar" disabled={!isValid}>
             Cadastrar
           </button>
         </form>
