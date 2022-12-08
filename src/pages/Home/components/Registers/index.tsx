@@ -8,7 +8,7 @@ import api from "../../../../services/disappearanceApi";
 import { AddCard } from "../../../../components/AddCard";
 
 export function Registers() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [disappearances, setDisappearances] = useState<DisappearanceProps[]>(
     [],
   );
@@ -22,6 +22,7 @@ export function Registers() {
           limit: 9,
         },
       });
+
       setDisappearances(data);
       setIsLoading(false);
     }
@@ -30,9 +31,10 @@ export function Registers() {
   return (
     <div className={styles.container}>
       <h2>Últimos registros</h2>
+
       {disappearances.length === 0 && !isLoading && (
         <p className={styles.noDataMessage}>
-          Oba!!! Nós temos nenhum pet desaparecido.
+          Oba!!! Nós não temos nenhum pet desaparecido.
         </p>
       )}
 
@@ -46,9 +48,7 @@ export function Registers() {
                 <Card key={disappearance.id} disappearance={disappearance} />
               ))
             ) : (
-              <>
-                <AddCard />
-              </>
+              <AddCard />
             )}
           </>
         )}

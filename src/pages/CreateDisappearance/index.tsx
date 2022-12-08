@@ -158,9 +158,9 @@ export function CreateDisappearance() {
     if (!user) {
       addToast({
         type: "error",
-        title: "Vc precisa logar.",
+        title: "Você precisa logar.",
         description:
-          "Para criar um registro, vc precisa estar logado na plataforma.",
+          "Para criar um registro, você precisa estar logado na plataforma.",
       });
 
       navigate("/signin");

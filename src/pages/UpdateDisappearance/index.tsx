@@ -165,7 +165,7 @@ export function UpdateDisappearance() {
         addToast({
           type: "success",
           title: "Desaparecimento finalizado com sucesso",
-          description: "Ficamos felizes que vc encontrou seu animalzinho.",
+          description: "Ficamos felizes que você encontrou seu animalzinho.",
         });
 
         window.scrollTo({
@@ -280,11 +280,16 @@ export function UpdateDisappearance() {
             <div className={styles.fieldGroup}>
               <InputField
                 errorMessage={errors.phone?.message}
-                register={register("phone")}
+                register={
+                  (register("phone"),
+                  {
+                    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChangePhone(e),
+                  })
+                }
                 type="text"
                 maxLength={15}
                 label="Whatsapp"
-                handleFieldValue={handleChangePhone}
               />
 
               <InputField
