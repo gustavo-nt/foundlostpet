@@ -34,9 +34,11 @@ export function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
+    mode: "all",
+    reValidateMode: "onChange",
   });
 
   const onSubmit = useCallback(
@@ -50,9 +52,13 @@ export function SignIn() {
         addToast({
           type: "success",
           title: "Login realizado com sucesso",
+          description:
+            "Em breve, você será redirecionado para a página inicial.",
         });
 
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       } catch (error) {
         addToast({
           type: "error",
@@ -95,7 +101,7 @@ export function SignIn() {
               />
             </div>
 
-            <button type="submit" title="Entrar">
+            <button type="submit" title="Entrar" disabled={!isValid}>
               Entrar
             </button>
             <Link to="/reset-password">Esqueci Minha Senha</Link>

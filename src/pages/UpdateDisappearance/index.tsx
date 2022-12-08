@@ -3,8 +3,8 @@ import Select from "react-select";
 import { Marker } from "react-leaflet";
 import { useForm } from "react-hook-form";
 import { LeafletMouseEvent } from "leaflet";
-import { useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import mapIcon from "../../utils/mapIcon";
@@ -16,6 +16,7 @@ import { InputField } from "../../components/InputField";
 import { TextareaField } from "../../components/TextareaField";
 
 import styles from "./styles.module.scss";
+import phoneMask from "../../utils/phoneMask";
 import geocodeApi from "../../services/geocodeApi";
 import disappearanceApi from "../../services/disappearanceApi";
 
@@ -57,14 +58,18 @@ const schema = yup.object().shape({
 });
 
 export function UpdateDisappearance() {
+  const navigate = useNavigate();
+
   const {
     register,
     setValue,
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<Disappearance>({
+    mode: "all",
+    reValidateMode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
       city: "",
@@ -83,6 +88,9 @@ export function UpdateDisappearance() {
 
   const [isCenteredMap, setIsCenteredMap] = useState(true);
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+  const [disappearance, setDisappearance] = useState<Disappearance | null>(
+    null,
+  );
 
   const specieOptionSelected = useMemo(
     () => options.find((item) => item.value === type),
@@ -119,8 +127,8 @@ export function UpdateDisappearance() {
       try {
         await disappearanceApi.put(`/disappearances/${data.id}`, {
           ...data,
-          latitude: Number(data.latitude),
-          longitude: Number(data.longitude),
+          latitude: Number(position.latitude),
+          longitude: Number(position.longitude),
           image: `${String(data.type)}.png`,
         });
 
@@ -128,6 +136,11 @@ export function UpdateDisappearance() {
           type: "success",
           title: "Desaparecimento atualizado com sucesso",
           description: "Fique atento os comentários do seu registro",
+        });
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
         });
       } catch (error) {
         addToast({
@@ -138,15 +151,54 @@ export function UpdateDisappearance() {
         });
       }
     },
-    [addToast],
+    [addToast, position],
   );
+
+  const handleClosedDisappearance = useCallback(async () => {
+    if (disappearance) {
+      try {
+        await disappearanceApi.put(`/disappearances/${disappearance.id}`, {
+          ...disappearance,
+          situation: "FOUND",
+        });
+
+        addToast({
+          type: "success",
+          title: "Desaparecimento finalizado com sucesso",
+          description: "Ficamos felizes que vc encontrou seu animalzinho.",
+        });
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+
+        setTimeout(() => {
+          navigate("/map");
+        }, 3000);
+      } catch (error) {
+        addToast({
+          type: "error",
+          title: "Erro ao finalizar desaparecimento.",
+          description:
+            "Ocorreu um erro ao finalizar o desaparecimento. Tente novamente em alguns instantes.",
+        });
+      }
+    }
+  }, [disappearance, addToast, navigate]);
 
   useEffect(() => {
     async function loadDisappearance() {
       const { data } = await disappearanceApi.get<Disappearance>(
         `/disappearances/${id}`,
       );
-      reset(data);
+
+      reset({
+        ...data,
+        phone: phoneMask(data.phone),
+      });
+
+      setDisappearance(data);
 
       setPosition({
         latitude: Number(data.latitude),
@@ -156,6 +208,13 @@ export function UpdateDisappearance() {
 
     loadDisappearance();
   }, [reset, id]);
+
+  const handleChangePhone = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue("phone", phoneMask(e.target.value.toString()));
+    },
+    [setValue],
+  );
 
   return (
     <div className={styles.container}>
@@ -222,8 +281,10 @@ export function UpdateDisappearance() {
               <InputField
                 errorMessage={errors.phone?.message}
                 register={register("phone")}
-                type="number"
+                type="text"
+                maxLength={15}
                 label="Whatsapp"
+                handleFieldValue={handleChangePhone}
               />
 
               <InputField
@@ -290,10 +351,14 @@ export function UpdateDisappearance() {
           </fieldset>
 
           <div className={styles.actions}>
-            <button type="button" title="Finalizar">
+            <button
+              type="button"
+              title="Finalizar"
+              onClick={handleClosedDisappearance}
+            >
               Finalizar
             </button>
-            <button type="submit" title="Atualizar">
+            <button type="submit" title="Atualizar" disabled={!isValid}>
               Atualizar
             </button>
           </div>

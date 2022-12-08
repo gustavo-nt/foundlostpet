@@ -17,6 +17,7 @@ import { PencilLine, Warning } from "phosphor-react";
 import mapIcon from "../../utils/mapIcon";
 import styles from "./styles.module.scss";
 import { Loading } from "../../components/Loading";
+import phoneMask from "../../utils/phoneMask";
 
 interface CommentProps {
   id: string;
@@ -142,7 +143,7 @@ export function Disappearance() {
                 type="number"
                 name="whatsapp"
                 label="Whatsapp"
-                value={disappearance?.phone}
+                value={phoneMask(disappearance?.phone)}
               />
 
               <InputField

@@ -31,8 +31,8 @@ export function InputField({
       <div className={styles.content} data-icon={!!Icon}>
         <input
           {...rest}
-          {...register}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+          {...register}
         />
         {Icon && <Icon size={20} />}
       </div>

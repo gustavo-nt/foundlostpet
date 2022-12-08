@@ -14,7 +14,7 @@ export function Registers() {
   );
 
   useEffect(() => {
-    // getDisappearances();
+    getDisappearances();
 
     async function getDisappearances() {
       const { data } = await api.get(`/disappearances`, {
