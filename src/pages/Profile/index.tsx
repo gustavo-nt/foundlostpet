@@ -23,6 +23,7 @@ import { Skeleton } from "../../components/Skeleton";
 import { DisappearanceProps } from "../../types";
 import { Card } from "../../components/Card";
 import phoneMask from "../../utils/phoneMask";
+import { Button } from "../../components/Button";
 
 interface IFormInputs extends User {
   password?: string;
@@ -66,7 +67,7 @@ export function Profile() {
     setValue,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -217,6 +218,11 @@ export function Profile() {
           title: "Erro na atualização do perfil",
           description:
             "Ocorreu um erro ao atualizar sua conta. Tente novamente em alguns instantes.",
+        });
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
         });
       }
     },
@@ -381,9 +387,12 @@ export function Profile() {
               </div>
             </fieldset>
 
-            <button type="submit" title="Editar" disabled={!isEnableEdit}>
-              Editar
-            </button>
+            <Button
+              type="submit"
+              title="Editar"
+              loading={isSubmitting}
+              disabled={!isEnableEdit || isSubmitting}
+            />
           </form>
         ) : (
           <section className={styles.grid}>

@@ -19,6 +19,7 @@ import styles from "./styles.module.scss";
 import phoneMask from "../../utils/phoneMask";
 import geocodeApi from "../../services/geocodeApi";
 import disappearanceApi from "../../services/disappearanceApi";
+import { Button } from "../../components/Button";
 
 interface Disappearance {
   id: string;
@@ -66,7 +67,7 @@ export function UpdateDisappearance() {
     handleSubmit,
     watch,
     reset,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<Disappearance>({
     mode: "all",
     reValidateMode: "onChange",
@@ -148,6 +149,11 @@ export function UpdateDisappearance() {
           title: "Erro ao atualizar desaparecimento.",
           description:
             "Ocorreu um erro ao atualizar o desaparecimento. Tente novamente em alguns instantes.",
+        });
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
         });
       }
     },
@@ -356,16 +362,20 @@ export function UpdateDisappearance() {
           </fieldset>
 
           <div className={styles.actions}>
-            <button
-              type="button"
+            <Button
+              type="submit"
               title="Finalizar"
+              loading={isSubmitting}
+              disabled={!isValid || isSubmitting}
               onClick={handleClosedDisappearance}
-            >
-              Finalizar
-            </button>
-            <button type="submit" title="Atualizar" disabled={!isValid}>
-              Atualizar
-            </button>
+            />
+
+            <Button
+              type="submit"
+              title="Atualizar"
+              loading={isSubmitting}
+              disabled={!isValid || isSubmitting}
+            />
           </div>
         </form>
       </div>

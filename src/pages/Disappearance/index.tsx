@@ -1,23 +1,23 @@
 import { Marker } from "react-leaflet";
+import { PencilLine, Warning } from "phosphor-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Comment } from "./components/Comment";
 import { Header } from "../../components/Header";
+import { Loading } from "../../components/Loading";
+import { NewComment } from "./components/NewComment";
 import { InputField } from "../../components/InputField";
 import { LeafletMap } from "../../components/LeafletMap";
 import { TextareaField } from "../../components/TextareaField";
 
+import mapIcon from "../../utils/mapIcon";
+import phoneMask from "../../utils/phoneMask";
 import { useAuth, User } from "../../hooks/auth";
-
+import api from "../../services/disappearanceApi";
 import { DisappearanceProps, LinkEnum, SituationEnum } from "../../types";
 
-import api from "../../services/disappearanceApi";
-import { PencilLine, Warning } from "phosphor-react";
-import mapIcon from "../../utils/mapIcon";
 import styles from "./styles.module.scss";
-import { Loading } from "../../components/Loading";
-import phoneMask from "../../utils/phoneMask";
 
 interface CommentProps {
   id: string;
@@ -223,6 +223,11 @@ export function Disappearance() {
 
           <div className={styles.details}>
             <h2>Comentários</h2>
+
+            <NewComment
+              onCreateNewComment={getComments}
+              disappearanceId={disappearance?.id}
+            />
 
             {isLoading ? (
               <div className={styles.loadingComments}>
