@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { User } from "../../hooks/auth";
 import { useToast } from "../../hooks/toast";
 import phoneMask from "../../utils/phoneMask";
+import { Button } from "../../components/Button";
 import { Footer } from "../../components/Footer";
 import { LeafletMap } from "../../components/LeafletMap";
 import { HeaderFlow } from "../../components/HeaderFlow";
@@ -50,7 +51,7 @@ export function SignUp() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<IFormInputs>({
     mode: "all",
     reValidateMode: "onChange",
@@ -247,9 +248,12 @@ export function SignUp() {
             </div>
           </fieldset>
 
-          <button type="submit" title="Cadastrar" disabled={!isValid}>
-            Cadastrar
-          </button>
+          <Button
+            type="submit"
+            title="Cadastrar"
+            loading={isSubmitting}
+            disabled={!isValid || isSubmitting}
+          />
         </form>
       </div>
 

@@ -8,6 +8,7 @@ import { Lock, SignOut, LockOpen, EnvelopeSimple } from "phosphor-react";
 import styles from "./styles.module.scss";
 import { useToast } from "../../hooks/toast";
 import logo from "../../assets/logo-yellow.png";
+import { Button } from "../../components/Button";
 import api from "../../services/disappearanceApi";
 import { HeaderFlow } from "../../components/HeaderFlow";
 import { InputField } from "../../components/InputField";
@@ -35,7 +36,7 @@ export function ResetPassword() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
   });
@@ -107,9 +108,12 @@ export function ResetPassword() {
               />
             </div>
 
-            <button type="submit" title="Alterar Senha">
-              Alterar Senha
-            </button>
+            <Button
+              type="submit"
+              title="Entrar"
+              loading={isSubmitting}
+              disabled={!isValid || isSubmitting}
+            />
           </form>
 
           <Link to="/signin" className={styles.signin}>

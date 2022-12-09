@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -15,6 +15,7 @@ import { EnvelopeSimple, Lock, SignOut } from "phosphor-react";
 import styles from "./styles.module.scss";
 import { useAuth } from "../../hooks/auth";
 import { useToast } from "../../hooks/toast";
+import { Button } from "../../components/Button";
 
 interface IFormInputs {
   email: string;
@@ -34,7 +35,7 @@ export function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
     mode: "all",
@@ -101,9 +102,12 @@ export function SignIn() {
               />
             </div>
 
-            <button type="submit" title="Entrar" disabled={!isValid}>
-              Entrar
-            </button>
+            <Button
+              type="submit"
+              title="Entrar"
+              loading={isSubmitting}
+              disabled={!isValid || isSubmitting}
+            />
             <Link to="/reset-password">Esqueci Minha Senha</Link>
           </form>
 
