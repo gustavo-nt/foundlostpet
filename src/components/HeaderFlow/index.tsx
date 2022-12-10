@@ -1,17 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocationContext } from "../../hooks/location";
 
 import { ArrowLeft, MapPin } from "phosphor-react";
 import styles from "./styles.module.scss";
 
 export function HeaderFlow() {
+  const navigate = useNavigate();
   const { geoLocation } = useLocationContext();
 
   return (
     <header className={styles.container}>
-      <NavLink to="/">
+      <div onClick={() => navigate(-1)}>
         <ArrowLeft size={32} />
-      </NavLink>
+      </div>
 
       <div className={styles.location}>
         <MapPin size={22} weight="fill" />

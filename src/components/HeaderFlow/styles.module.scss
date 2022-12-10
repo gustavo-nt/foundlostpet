@@ -7,11 +7,15 @@
   margin: 0 auto;
   padding: 1rem;
 
-  > a svg {
-    color: var(--yellow-800);
+  > div:not(.location) {
+    cursor: pointer;
 
-    &:hover {
-      filter: brightness(0.875);
+    svg {
+      color: var(--yellow-800);
+
+      &:hover {
+        filter: brightness(0.875);
+      }
     }
   }
 }

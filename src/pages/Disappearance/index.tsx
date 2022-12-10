@@ -1,7 +1,6 @@
 import { Marker } from "react-leaflet";
-import { PencilLine, Warning } from "phosphor-react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import React, { useCallback, useEffect, useState } from "react";
 
 import { Comment } from "./components/Comment";
 import { Header } from "../../components/Header";
@@ -15,8 +14,15 @@ import mapIcon from "../../utils/mapIcon";
 import phoneMask from "../../utils/phoneMask";
 import { useAuth, User } from "../../hooks/auth";
 import api from "../../services/disappearanceApi";
-import { DisappearanceProps, LinkEnum, SituationEnum } from "../../types";
 
+import {
+  LinkEnum,
+  SpecieEnum,
+  SituationEnum,
+  DisappearanceProps,
+} from "../../types";
+
+import { PencilLine } from "phosphor-react";
 import styles from "./styles.module.scss";
 
 interface CommentProps {
@@ -83,6 +89,7 @@ export function Disappearance() {
             <Link
               to={`/update-disappearance/${disappearance.id}`}
               className={styles.edit}
+              title="Editar registro"
             >
               <PencilLine size={28} weight="fill" />
             </Link>
@@ -133,14 +140,14 @@ export function Disappearance() {
               id="species"
               name="species"
               label="Espécie"
-              value={disappearance?.type}
+              value={disappearance?.type ? SpecieEnum[disappearance?.type] : ""}
             />
 
             <div className={styles.fieldGroup}>
               <InputField
                 disabled
                 id="whatsapp"
-                type="number"
+                type="text"
                 name="whatsapp"
                 label="Whatsapp"
                 value={phoneMask(disappearance?.phone)}
@@ -232,13 +239,6 @@ export function Disappearance() {
             {isLoading ? (
               <div className={styles.loadingComments}>
                 <Loading />
-              </div>
-            ) : !comments.length ? (
-              <div className={styles.emptyComments}>
-                <Warning size={32} weight="fill" />
-                <strong>
-                  Ops...Infelizmente não temos atualizações sobre o caso.
-                </strong>
               </div>
             ) : (
               comments.map((comment) => (

@@ -110,7 +110,7 @@ export function ResetPassword() {
 
             <Button
               type="submit"
-              title="Entrar"
+              title="Alterar senha"
               loading={isSubmitting}
               disabled={!isValid || isSubmitting}
             />

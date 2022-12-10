@@ -14,6 +14,7 @@
   form {
     padding: 4rem;
     margin: 3rem auto;
+    position: relative;
     color: var(--gray-900);
     background: var(--white);
     border-radius: 6px;
@@ -43,6 +44,26 @@
 
     > div + div {
       margin-top: 0.875rem;
+    }
+  }
+
+  .delete {
+    margin: 0;
+    right: 2rem;
+    display: flex;
+    position: absolute;
+    background-color: transparent;
+    cursor: pointer;
+    top: 1.75rem;
+    border: 0;
+
+    > svg {
+      color: var(--purple-500);
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--purple-800);
+      }
     }
   }
 
@@ -81,6 +102,11 @@
       color: var(--green-600);
       border: 1px solid var(--green-600);
       background: transparent;
+
+      > div {
+        border: 3px solid var(--green-600);
+        border-top-color: rgba(3, 3, 3, 0.1);
+      }
 
       &:not(:disabled) {
         &:hover {

@@ -13,6 +13,15 @@ export enum LinkEnum {
   cow = "https://thumbs.dreamstime.com/b/cabe%C3%A7a-de-vaca-isolada-na-ilustra%C3%A7%C3%A3o-fundo-branco-da-arte-digital-animais-jovens-dom%C3%A9sticos-castanhos-que-trazem-vertebrados-232825331.jpg",
 }
 
+export enum SpecieEnum {
+  dog = "Cachorro",
+  bird = "Pássaro",
+  cat = "Gato",
+  horse = "Cavalo",
+  rodent = "Roedor",
+  cow = "Vaca",
+}
+
 export interface UserProps {
   id: string;
   name: string;

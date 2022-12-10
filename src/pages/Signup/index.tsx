@@ -185,13 +185,10 @@ export function SignUp() {
                 maxLength={15}
                 label="Telefone"
                 errorMessage={errors.phone?.message}
-                register={
-                  (register("phone"),
-                  {
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleChangePhone(e),
-                  })
-                }
+                register={register("phone", {
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChangePhone(e),
+                })}
                 value={phone}
               />
 

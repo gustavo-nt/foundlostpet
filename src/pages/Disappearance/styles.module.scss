@@ -111,21 +111,6 @@
     }
   }
 
-  .emptyComments {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    > svg {
-      color: var(--yellow-500);
-    }
-
-    > strong {
-      font-size: 1rem;
-      color: var(--gray-600);
-    }
-  }
-
   .loadingComments {
     display: flex;
     justify-content: center;

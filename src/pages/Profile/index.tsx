@@ -239,7 +239,6 @@ export function Profile() {
 
   const handleChangePhone = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log(e.target.value);
       setValue("phone", phoneMask(e.target.value.toString()));
     },
     [setValue],
@@ -260,7 +259,7 @@ export function Profile() {
           onClick={() => handleChangeActiveTab(2)}
           className={activeTab === 2 ? styles.active : ""}
         >
-          Meu cadastros
+          Meus cadastros
         </span>
       </div>
 
@@ -300,13 +299,10 @@ export function Profile() {
                 maxLength={15}
                 label="Telefone"
                 errorMessage={errors.phone?.message}
-                register={
-                  (register("phone"),
-                  {
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleChangePhone(e),
-                  })
-                }
+                register={register("phone", {
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChangePhone(e),
+                })}
                 disabled={!isEnableEdit}
                 value={phone}
               />

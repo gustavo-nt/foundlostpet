@@ -20,6 +20,7 @@ import phoneMask from "../../utils/phoneMask";
 import geocodeApi from "../../services/geocodeApi";
 import disappearanceApi from "../../services/disappearanceApi";
 import { useAuth } from "../../hooks/auth";
+import { Button } from "../../components/Button";
 
 interface IFormInputs {
   name: string;
@@ -66,16 +67,16 @@ export function CreateDisappearance() {
     setValue,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<IFormInputs>({
     mode: "all",
     reValidateMode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
-      city: "",
-      latitude: 0,
-      longitude: 0,
       uf: "",
+      city: "",
+      phone: "",
+      description: "",
       type: options[0].value,
     },
   });
@@ -116,9 +117,10 @@ export function CreateDisappearance() {
       try {
         await disappearanceApi.post("/disappearances", {
           ...data,
-          latitude: Number(data.latitude),
-          longitude: Number(data.longitude),
+          latitude: Number(position.latitude),
+          longitude: Number(position.longitude),
           image: `${String(data.type)}.png`,
+          situation: "MISSING",
         });
 
         addToast({
@@ -144,7 +146,7 @@ export function CreateDisappearance() {
         });
       }
     },
-    [addToast, navigate],
+    [addToast, navigate, position],
   );
 
   const handleChangePhone = useCallback(
@@ -190,6 +192,9 @@ export function CreateDisappearance() {
             <div className={styles.selectContainer}>
               <span>Espécie</span>
               <Select
+                onChange={(newValue) => {
+                  setValue("type", String(newValue?.value));
+                }}
                 classNamePrefix="select"
                 isClearable
                 name="type"
@@ -230,13 +235,10 @@ export function CreateDisappearance() {
                 maxLength={15}
                 label="Telefone"
                 errorMessage={errors.phone?.message}
-                register={
-                  (register("phone"),
-                  {
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleChangePhone(e),
-                  })
-                }
+                register={register("phone", {
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChangePhone(e),
+                })}
                 value={phone}
               />
 
@@ -299,9 +301,12 @@ export function CreateDisappearance() {
             </div>
           </fieldset>
 
-          <button type="submit" title="Cadastrar" disabled={!isValid}>
-            Cadastrar
-          </button>
+          <Button
+            type="submit"
+            title="Cadastrar"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          />
         </form>
       </div>
 

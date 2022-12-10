@@ -7,19 +7,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import mapIcon from "../../utils/mapIcon";
 import { useToast } from "../../hooks/toast";
+import { Button } from "../../components/Button";
 import { Footer } from "../../components/Footer";
 import { LeafletMap } from "../../components/LeafletMap";
 import { HeaderFlow } from "../../components/HeaderFlow";
 import { InputField } from "../../components/InputField";
 import { TextareaField } from "../../components/TextareaField";
 
-import styles from "./styles.module.scss";
+import mapIcon from "../../utils/mapIcon";
 import phoneMask from "../../utils/phoneMask";
 import geocodeApi from "../../services/geocodeApi";
 import disappearanceApi from "../../services/disappearanceApi";
-import { Button } from "../../components/Button";
+
+import { Trash } from "phosphor-react";
+import styles from "./styles.module.scss";
 
 interface Disappearance {
   id: string;
@@ -88,6 +90,7 @@ export function UpdateDisappearance() {
   const { id } = useParams<{ id: string }>();
 
   const [isCenteredMap, setIsCenteredMap] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
   const [disappearance, setDisappearance] = useState<Disappearance | null>(
     null,
@@ -160,12 +163,16 @@ export function UpdateDisappearance() {
     [addToast, position],
   );
 
-  const handleClosedDisappearance = useCallback(async () => {
+  const handleDoneDisappearance = useCallback(async () => {
+    setIsLoading(true);
+
     if (disappearance) {
       try {
         await disappearanceApi.put(`/disappearances/${disappearance.id}`, {
           ...disappearance,
           situation: "FOUND",
+          latitude: Number(position.latitude),
+          longitude: Number(position.longitude),
         });
 
         addToast({
@@ -179,6 +186,8 @@ export function UpdateDisappearance() {
           behavior: "smooth",
         });
 
+        setIsLoading(false);
+
         setTimeout(() => {
           navigate("/map");
         }, 3000);
@@ -188,6 +197,39 @@ export function UpdateDisappearance() {
           title: "Erro ao finalizar desaparecimento.",
           description:
             "Ocorreu um erro ao finalizar o desaparecimento. Tente novamente em alguns instantes.",
+        });
+
+        setIsLoading(false);
+      }
+    }
+  }, [disappearance, addToast, navigate, position]);
+
+  const handleClosedDisappearance = useCallback(async () => {
+    if (disappearance) {
+      try {
+        await disappearanceApi.delete(`/disappearances/${disappearance.id}`);
+
+        addToast({
+          type: "success",
+          title: "Desaparecimento excluido com sucesso",
+          description:
+            "Agradecemos por utilizar nosso site, esperamos que tenha tido um desfecho feliz.",
+        });
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+
+        setTimeout(() => {
+          navigate("/map");
+        }, 3000);
+      } catch (error) {
+        addToast({
+          type: "error",
+          title: "Erro ao excluir desaparecimento.",
+          description:
+            "Ocorreu um erro ao excluir o desaparecimento. Tente novamente em alguns instantes.",
         });
       }
     }
@@ -229,6 +271,14 @@ export function UpdateDisappearance() {
       <div className={styles.content}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1>Atualização de um desaparecimento</h1>
+
+          <button title="Excluir registro" className={styles.delete}>
+            <Trash
+              size={28}
+              weight="fill"
+              onClick={handleClosedDisappearance}
+            />
+          </button>
 
           <fieldset>
             <legend>
@@ -286,13 +336,10 @@ export function UpdateDisappearance() {
             <div className={styles.fieldGroup}>
               <InputField
                 errorMessage={errors.phone?.message}
-                register={
-                  (register("phone"),
-                  {
-                    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleChangePhone(e),
-                  })
-                }
+                register={register("phone", {
+                  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChangePhone(e),
+                })}
                 type="text"
                 maxLength={15}
                 label="Whatsapp"
@@ -361,22 +408,24 @@ export function UpdateDisappearance() {
             </div>
           </fieldset>
 
-          <div className={styles.actions}>
-            <Button
-              type="submit"
-              title="Finalizar"
-              loading={isSubmitting}
-              disabled={!isValid || isSubmitting}
-              onClick={handleClosedDisappearance}
-            />
+          {disappearance?.situation !== "FOUND" && (
+            <div className={styles.actions}>
+              <Button
+                type="button"
+                title="Finalizar"
+                loading={isLoading}
+                disabled={!isValid || isLoading}
+                onClick={handleDoneDisappearance}
+              />
 
-            <Button
-              type="submit"
-              title="Atualizar"
-              loading={isSubmitting}
-              disabled={!isValid || isSubmitting}
-            />
-          </div>
+              <Button
+                type="submit"
+                title="Atualizar"
+                loading={isSubmitting}
+                disabled={!isValid || isSubmitting}
+              />
+            </div>
+          )}
         </form>
       </div>
 
