@@ -29,21 +29,23 @@
 - [x] Alteração de Senha
 - [x] Listagem dos desaparecimentos
 - [x] Atualização do desaparecimento
-- [x] Atualização de Perfil do Usuário 
+- [x] Atualização de Perfil do Usuário
 - [x] Adição de comentários no desaparecimento
 
 ### 💻 Projeto
+
 O Govet é uma aplicação web voltada para registros de desaparecimento de animais de estimação, utilizando a geolocalização a seu favor e permitir a interatidade de comunidade local no registro. Essa aplicação foi desenvolvida como Atividade Extensionalista da Uninter.
 
 ### 🖼 Demonstração
+
 <p>
-   <img src="https://github.com/gustavo-nt/govet/blob/master/src/assets/dashboard.jpg" alt="Home"/>  
+   <img src="https://github.com/gustavo-nt/foundlostpet/blob/master/src/assets/home-github.png" alt="Home"/>  
 </p>
 
 ### ⚙ Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
-[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) e/ou [Yarn](https://https://yarnpkg.com/) 
+[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/) e/ou [Yarn](https://https://yarnpkg.com/)
 Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
 
 ### 🎲 Rodando a Aplicação (web)
@@ -87,7 +89,7 @@ Para uma melhorar estrutura de projetos utilizamos das seguintes fundamentos:
 - TDD
 - Hooks
 
-###  📘 Padrão de Código
+### 📘 Padrão de Código
 
 Para padronizar a escrita do código, utilizamos as seguinte ferramentas:
 
