@@ -9,7 +9,12 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/toast";
 import { useAuth, User } from "../../hooks/auth";
+
+import { Card } from "../../components/Card";
 import { Footer } from "../../components/Footer";
+import { Button } from "../../components/Button";
+import { AddCard } from "../../components/AddCard";
+import { Skeleton } from "../../components/Skeleton";
 import { LeafletMap } from "../../components/LeafletMap";
 import { HeaderFlow } from "../../components/HeaderFlow";
 import { InputField } from "../../components/InputField";
@@ -18,12 +23,9 @@ import mapIcon from "../../utils/mapIcon";
 import api from "../../services/geocodeApi";
 import disappearanceApi from "../../services/disappearanceApi";
 
-import styles from "./styles.module.scss";
-import { Skeleton } from "../../components/Skeleton";
 import { DisappearanceProps } from "../../types";
-import { Card } from "../../components/Card";
 import phoneMask from "../../utils/phoneMask";
-import { Button } from "../../components/Button";
+import styles from "./styles.module.scss";
 
 interface IFormInputs extends User {
   password?: string;
@@ -392,13 +394,15 @@ export function Profile() {
           </form>
         ) : (
           <section className={styles.grid}>
-            {isLoading
-              ? new Array(9)
-                  .fill("")
-                  .map((_, index) => <Skeleton key={index} />)
-              : disappearances.map((disappearance: DisappearanceProps) => (
-                  <Card key={disappearance.id} disappearance={disappearance} />
-                ))}
+            {isLoading ? (
+              new Array(9).fill("").map((_, index) => <Skeleton key={index} />)
+            ) : disappearances.length > 0 ? (
+              disappearances.map((disappearance: DisappearanceProps) => (
+                <Card key={disappearance.id} disappearance={disappearance} />
+              ))
+            ) : (
+              <AddCard />
+            )}
           </section>
         )}
       </div>
